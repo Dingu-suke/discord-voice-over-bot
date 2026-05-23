@@ -96,13 +96,13 @@ async def join(interaction: discord.Interaction):
     else:
         await channel.connect()
 
-    read_channel[guild_id] = interaction.channel.id
+    read_channel[guild_id] = channel.id
     queues.setdefault(guild_id, asyncio.Queue())
     if guild_id not in players or players[guild_id].done():
         players[guild_id] = asyncio.create_task(player_loop(guild_id))
 
     await interaction.response.send_message(
-        f"{channel.name} に参加しました。<#{interaction.channel.id}> を読み上げます"
+        f"{channel.name} に参加しました。VC内のチャットを読み上げます"
     )
 
 
