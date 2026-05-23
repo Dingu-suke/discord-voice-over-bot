@@ -1,0 +1,17 @@
+services:
+  voicevox:
+    # Apple Silicon Mac と Oracle Cloud Ampere A1 (ARM64) で動くタグ。
+    # x86_64 環境では voicevox/voicevox_engine:cpu-ubuntu20.04-latest に差し替え。
+    image: voicevox/voicevox_engine:cpu-arm64-ubuntu20.04-latest
+    ports:
+      - "50021:50021"
+    restart: unless-stopped
+
+  bot:
+    build: .
+    env_file: .env
+    environment:
+      VOICEVOX_URL: http://voicevox:50021
+    depends_on:
+      - voicevox
+    restart: unless-stopped
